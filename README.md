@@ -19,8 +19,8 @@ Change it to match your server
 `-d \`  
 `-p 10050:10050 \`  
 `-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \`  
-`--env=ZABBIX_SERVER=my.ip" \`  
-`million12/zabbix-agent \`  
+`--env="ZABBIX_SERVER=my.ip" \`  
+`million12/zabbix-agent `  
 
 #### CoreOS 
 `docker run \`  
@@ -32,7 +32,7 @@ Change it to match your server
 `-v /var/run/docker.sock:/coreos/var/run/docker.sock \`  
 `-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \`  
 `--env="ZABBIX_SERVER=my.ip" \`  
-`million12/zabbix-agent \`
+`million12/zabbix-agent `
     
 ## Author
 

@@ -11,5 +11,3 @@ ENV ZABBIX_SERVER=127.0.0.1
 COPY container-files /
 
 EXPOSE 10050
-
-#ENTRYPOINT ["/bootstrap.sh"]
