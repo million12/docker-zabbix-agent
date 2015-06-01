@@ -1,13 +1,29 @@
-FROM million12/centos-supervisor
+FROM centos:centos7
 MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
 
+COPY foreground.patch /foreground.patch
+
+ENV ZABBIX_VERSION=2.4.0
+
 RUN \
-  yum install -y epel-release && \
-  yum install -y zabbix22-agent && \
+  yum clean all && yum makecache && \
+  yum update --nogpgcheck -y && \
+  yum install --nogpgcheck -y svn automake gcc make && \
+  svn co svn://svn.zabbix.com/tags/${ZABBIX_VERSION} /usr/local/src/zabbix && \
+  cd /usr/local/src/zabbix && \
+  svn patch /foreground.patch && \
+  ./bootstrap.sh && \
+  ./configure --enable-agent && \
+  make install && \
+  rpm -e --nodeps make gcc && \
+  yum remove -y svn automake && \
+  useradd -G wheel zabbix && \
   yum clean all
+
+COPY start.sh /start.sh
 
 ENV ZABBIX_SERVER=127.0.0.1
 
-COPY container-files /
+CMD /start.sh
 
 EXPOSE 10050

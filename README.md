@@ -1,5 +1,5 @@
 ## Zabbix Agent Docker Image
-This is a [million12/zabbix-agent](https://registry.hub.docker.com/u/million12/zabbix-agent/) docker image with Zabbix Agent. It's based on CentOS-7/Supervisor 
+This is a [million12/zabbix-agent](https://registry.hub.docker.com/u/million12/zabbix-agent/) docker image with Zabbix Agent. It's based on CentOS-7 official image.
 
 ## ENV variables
 
