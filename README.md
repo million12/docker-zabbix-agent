@@ -1,5 +1,6 @@
 ## Zabbix Agent Docker Image
-This is a [million12/zabbix-agent](https://registry.hub.docker.com/u/million12/zabbix-agent/) docker image with Zabbix Agent. It's based on CentOS-7 official image.
+This is a [million12/zabbix-agent](https://registry.hub.docker.com/u/million12/zabbix-agent/) docker image with Zabbix Agent. It's based on CentOS-7 official image.  
+**Zabbix agent running in foreground.** 
 
 ## ENV variables
 
@@ -9,30 +10,30 @@ Change it to match your server
 
 ## Usage
 ### Basic 
-`docker run \`  
-`-d \`  
-`-p 10050:10050 \`  
-`million12/zabbix-agent`
+	docker run \
+	-d \
+	-p 10050:10050 \
+	million12/zabbix-agent
 
 ### Mount custom config, set server ip
-`docker run \`  
-`-d \`  
-`-p 10050:10050 \`  
-`-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \`  
-`--env="ZABBIX_SERVER=my.ip" \`  
-`million12/zabbix-agent `  
+	docker run \
+	-d \
+	-p 10050:10050 \
+	-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \
+	--env="ZABBIX_SERVER=my.ip" \
+	million12/zabbix-agent 
 
 #### CoreOS 
-`docker run \`  
-`-d \`  
-`-p 10050:10050 \`  
-`-v /proc:/coreos/proc \`  
-`-v /sys:/coreos/sys \`  
-`-v /dev:/coreos/dev \`  
-`-v /var/run/docker.sock:/coreos/var/run/docker.sock \`  
-`-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \`  
-`--env="ZABBIX_SERVER=my.ip" \`  
-`million12/zabbix-agent `
+	docker run \
+	-d \
+	-p 10050:10050 \
+	-v /proc:/coreos/proc \
+	-v /sys:/coreos/sys \
+	-v /dev:/coreos/dev \
+	-v /var/run/docker.sock:/coreos/var/run/docker.sock \
+	-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \
+	--env="ZABBIX_SERVER=my.ip" \
+	million12/zabbix-agent
     
 ## Author
 
