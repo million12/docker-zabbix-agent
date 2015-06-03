@@ -1,9 +1,9 @@
 FROM centos:centos7
-MAINTAINER Marcin Ryzycki marcin@m12.io, Przemyslaw Ozgo linux@ozgo.info
+MAINTAINER Przemyslaw Ozgo linux@ozgo.info
 
 COPY foreground.patch /foreground.patch
 
-ENV ZABBIX_VERSION=2.4.0
+ENV ZABBIX_VERSION=2.4.5
 
 RUN \
   yum clean all && yum makecache && \
@@ -18,6 +18,7 @@ RUN \
   rpm -e --nodeps make gcc && \
   yum remove -y svn automake && \
   useradd -G wheel zabbix && \
+  rm -rf  /usr/local/src/zabbix && \
   yum clean all
 
 COPY start.sh /start.sh

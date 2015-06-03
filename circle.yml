@@ -1,0 +1,15 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - docker pull centos:centos7
+  post:
+      - docker build -t million12/zabbix-agent:test .
+
+test:
+  override:
+    - docker run -d --name zabbix-agent --net host million12/zabbix-agent:test
+    - sleep 5
+    - docker ps -a | grep "zabbix-agent" | grep Up

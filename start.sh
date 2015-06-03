@@ -25,4 +25,4 @@ if [[ $ZABBIX_SERVER != "127.0.0.1" ]]; then
   sed -i 's/Server=127.0.0.1/Server='$ZABBIX_SERVER'/g' ${CONFIG_FILE}
 fi
 log "Startting agent..."
-start_agent
+log `start_agent`
