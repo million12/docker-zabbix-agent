@@ -7,7 +7,6 @@ ENV ZABBIX_VERSION=2.4.5
 
 RUN \
   yum clean all && yum makecache && \
-  yum update --nogpgcheck -y && \
   yum install --nogpgcheck -y svn automake gcc make && \
   svn co svn://svn.zabbix.com/tags/${ZABBIX_VERSION} /usr/local/src/zabbix && \
   cd /usr/local/src/zabbix && \

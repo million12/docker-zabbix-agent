@@ -21,7 +21,7 @@ start_agent() {
   zabbix_agentd -f -c ${CONFIG_FILE}
 }
 if [[ $ZABBIX_SERVER != "127.0.0.1" ]]; then
-  log "Changing Zabbix Server IP to user provided."
+  log "Changing Zabbix Server IP to ${bold}${white}${ZABBIX_SERVER}${reset}."
   sed -i 's/Server=127.0.0.1/Server='$ZABBIX_SERVER'/g' ${CONFIG_FILE}
 fi
 log "Startting agent..."
