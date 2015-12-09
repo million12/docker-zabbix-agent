@@ -3,7 +3,7 @@ MAINTAINER Przemyslaw Ozgo linux@ozgo.info
 
 COPY foreground.patch /foreground.patch
 
-ENV ZABBIX_VERSION=2.4.5
+ENV ZABBIX_VERSION=2.4.6
 
 RUN \
   yum clean all && yum makecache && \
