@@ -21,14 +21,9 @@ start_agent() {
   zabbix_agentd -f -c ${CONFIG_FILE}
 }
 
-if [ -z "$METADATA" ]; then
-    METADATA=zabbix_docker
-    exit 1
-fi
-
 if [ -z "$HOST" ]; then
-    MACHINEID=$(cat /etc/machine-id)
-    HOST="$METADATA-$MACHINEID"
+    log "Environment Variable $HOST not set"
+    exit 1
 fi
 
 if [ $ZABBIX_SERVER != "127.0.0.1" ]; then
