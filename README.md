@@ -1,6 +1,6 @@
 ## Zabbix Agent Docker Image
 
-**Zabbix agent is running in foreground, and in Docker Container.** 
+**Zabbix agent is running in foreground, and in Docker Container.  It only fetch and generate metrics on the host machine, and not containers on the host machine.  Next step, containers metrics collect shall be added** 
 
 ## Prerequisites
 You have to create a zabbix server (2.4.7+) first, refer to [Install Zabbix Server In Container](https://hub.docker.com/r/zabbix/zabbix-server-2.4/ "zabbix-server")
@@ -37,3 +37,8 @@ docker run -d --privileged \
 	--env HOST=<zabbix_agent_ip> \
 	shuailong/docker-zabbix-agent:2.4.7
 ```
+
+## Give thanks to
+1. [million12](https://github.com/million12/docker-zabbix-agent, "million12")
+
+2. [bhuisgen](https://github.com/bhuisgen/docker-zabbix-coreos, "bhuisgen")
