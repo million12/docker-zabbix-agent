@@ -24,7 +24,7 @@ COPY start.sh /start.sh
 
 ENV ZABBIX_SERVER=127.0.0.1
 ENV METADATA=zabbix_docker
-ENV HOST
+ENV HOST=
 
 CMD /start.sh
 
