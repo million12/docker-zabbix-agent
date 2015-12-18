@@ -20,9 +20,24 @@ log() {
 start_agent() {
   zabbix_agentd -f -c ${CONFIG_FILE}
 }
+
+if [ -z "$METADATA" ]; then
+    echo "Host metadata is missing"
+    exit 1
+fi
+
+if [ -z "$HOST" ]; then
+    MACHINEID=$(cat /etc/machine-id)
+    HOST="$METADATA-$MACHINEID"
+fi
+
 if [[ $ZABBIX_SERVER != "127.0.0.1" ]]; then
   log "Changing Zabbix Server IP to ${bold}${white}${ZABBIX_SERVER}${reset}."
-  sed -i 's/Server=127.0.0.1/Server='$ZABBIX_SERVER'/g' ${CONFIG_FILE}
+  sed -i 's/^Server=127.0.0.1/Server='$ZABBIX_SERVER'/g' ${CONFIG_FILE}
+  sed -i 's/^ServerActive=127.0.0.1/ServerActive='$ZABBIX_SERVER'/g' ${CONFIG_FILE}
+  sed -i "s/^Hostname\=.*/Hostname\=$HOST/" ${CONFIG_FILE}
+  sed -i "s/^HostMetadata\=.*/HostMetadata\=$METADATA/" ${CONFIG_FILE}
 fi
+
 log "Startting agent..."
 log `start_agent`
