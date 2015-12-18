@@ -2,6 +2,9 @@
 
 **Zabbix agent is running in foreground, and in Docker Container.** 
 
+## Prerequisites
+You have to create a zabbix server (2.4.7+) first, refer to [Install Zabbix Server In Container](https://hub.docker.com/r/zabbix/zabbix-server-2.4/ "zabbix-server")
+
 ## ENV variables
 
 #### ZABBIX_SERVER
