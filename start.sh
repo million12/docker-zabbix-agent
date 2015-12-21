@@ -32,6 +32,17 @@ if [ $ZABBIX_SERVER != "127.0.0.1" ]; then
   sed -i 's/^ServerActive=127.0.0.1/ServerActive='$ZABBIX_SERVER'/g' ${CONFIG_FILE}
   sed -i 's/^Hostname\=.*/Hostname\='$HOST'/' ${CONFIG_FILE}
   sed -i 's/^HostMetadata\=.*/HostMetadata\='$METADATA'/' ${CONFIG_FILE}
+	cat >> "${CONFIG_FILE}" <<EOF
+AllowRoot=1
+LoadModulePath=/usr/local/lib/zabbix
+LoadModule=zabbix_module_docker.so
+UserParameter=docker.memusage[*],cat /sys/fs/cgroup/memory/docker/$2/memory.usage_in_bytes
+UserParameter=docker.memlimit[*],cat /sys/fs/cgroup/memory/docker/$2/memory.limit_in_bytes
+UserParameter=docker.cpusystem[*],cat /proc/stat | grep 'cpu ' | awk '{print $$2+$$3+$$4+$$5+$$6+$$7+$$8}'
+UserParameter=docker.cpuusage[*],cat /sys/fs/cgroup/cpuacct/docker/$2/cpuacct.usage
+
+UserParameter=docker.cpurate[*],CONTAINERID=$2;SYS_CPU_TOTAL_1=$(cat /proc/stat | grep 'cpu ' | awk '{print $$2+$$3+$$4+$$5+$$6+$$7+$$8}');CGROUP_USAGE_1=$(cat /sys/fs/cgroup/cpuacct/docker/${CONTAINERID}/cpuacct.usage);sleep 1;SYS_CPU_TOTAL_2=$(cat /proc/stat | grep 'cpu ' | awk '{print $$2+$$3+$$4+$$5+$$6+$$7+$$8}');CGROUP_USAGE_2=$(cat /sys/fs/cgroup/cpuacct/docker/${CONTAINERID}/cpuacct.usage);CGROUP_USAGE=`expr $CGROUP_USAGE_2 - $CGROUP_USAGE_1`;Total=`expr $SYS_CPU_TOTAL_2 - $SYS_CPU_TOTAL_1`;CPU_NUM=`cat /proc/stat | grep cpu[0-9] -c`;TICKS=`getconf CLK_TCK`;CGROUP_RATE=`expr $CGROUP_USAGE*$CPU_NUM/$Total/1000000000*${TICKS}|bc -l`;echo $CGROUP_RATE
+EOF
 fi
 
 log "Startting agent..."
