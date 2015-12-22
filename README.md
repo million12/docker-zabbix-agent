@@ -29,14 +29,28 @@ Required: True
 docker run -d --privileged \
   --net=host \
 	-v /proc:/docker/proc:ro \
-	-v /sys:/docker/sys \
-	-v /dev:/docker/dev \
-	-v /var/run/docker.sock:/var/run/docker.sock  \
+	-v /sys:/docker/sys:ro \
+	-v /dev:/docker/dev:ro \
+	-v /var/run/docker.sock:/var/run/docker.sock:ro  \
 	--env ZABBIX_SERVER=<zabbix_server_ip> \
 	--env METADATA=zabbix_docker \
 	--env HOST=<zabbix_agent_ip> \
 	shuailong/docker-zabbix-agent:2.4.7
 ```
+
+### Debug Mode
+```
+docker run -it --privileged \
+  --net=host \
+	-v /proc:/docker/proc:ro \
+	-v /sys:/docker/sys:ro \
+	-v /dev:/docker/dev:ro \
+	-v /var/run/docker.sock:/var/run/docker.sock:ro  \
+	--env ZABBIX_SERVER=<zabbix_server_ip> \
+	--env METADATA=zabbix_docker \
+	--env HOST=<zabbix_agent_ip> \
+	shuailong/docker-zabbix-agent:2.4.7 /bin/bash -c "/bin/sh /start.sh && tail -n 50 /tmp/zabbix_agentd.log"
+```  
 
 ## Give thanks to
 1. [million12](https://github.com/million12/docker-zabbix-agent, "million12")

@@ -33,8 +33,10 @@ if [ $ZABBIX_SERVER != "127.0.0.1" ]; then
   sed -i 's/^Hostname\=.*/Hostname\='$HOST'/' ${CONFIG_FILE}
   sed -i 's/^HostMetadata\=.*/HostMetadata\='$METADATA'/' ${CONFIG_FILE}
   echo "AllowRoot=1" | tee -a ${CONFIG_FILE}
-#  echo "LoadModulePath=/usr/local/lib/zabbix"| tee -a ${CONFIG_FILE}
-#  echo "LoadModule=zabbix_module_docker.so" | tee -a ${CONFIG_FILE}
+  echo "HostMetadata=${METADATA}" | tee -a ${CONFIG_FILE}
+  # echo "DebugLevel=4" | tee -a ${CONFIG_FILE}
+  echo "LoadModulePath=/usr/local/lib/zabbix"| tee -a ${CONFIG_FILE}
+  echo "LoadModule=zabbix_module_docker.so" | tee -a ${CONFIG_FILE}
   echo "UserParameter=docker.memusage[*],cat /docker/sys/fs/cgroup/memory/docker/\$2/memory.usage_in_bytes" | tee -a ${CONFIG_FILE}
   echo "UserParameter=docker.memlimit[*],cat /docker/sys/fs/cgroup/memory/docker/\$2/memory.limit_in_bytes" | tee -a ${CONFIG_FILE}
   echo "UserParameter=docker.cpusystem[*],cat /docker/proc/stat | grep 'cpu ' | awk '{print \$\$2+\$\$3+\$\$4+\$\$5+\$\$6+\$\$7+\$\$8}'" | tee -a ${CONFIG_FILE}
