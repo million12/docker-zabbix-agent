@@ -7,7 +7,7 @@ ENV ZABBIX_VERSION=2.4.7
 
 RUN \
   apt-get update && \
-  apt-get install  -y pkg-config subversion automake gcc make wget && \
+  apt-get install  -y pkg-config subversion automake gcc make wget bc && \
   svn co svn://svn.zabbix.com/tags/${ZABBIX_VERSION} /usr/local/src/zabbix && \
   cd /usr/local/src/zabbix && \
   svn patch /foreground.patch && \
