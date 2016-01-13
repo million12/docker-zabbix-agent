@@ -4,12 +4,12 @@ machine:
 
 dependencies:
   pre:
-    - docker pull centos:centos7
+    - docker pull ubuntu:14.04
   post:
-      - docker build -t million12/zabbix-agent:test .
+      - docker build -t shuailong/zabbix-agent:test .
 
 test:
   override:
-    - docker run -d --name zabbix-agent --net host million12/zabbix-agent:test
+    - docker run -d --name zabbix-agent --net host shuailong/zabbix-agent:test
     - sleep 5
     - docker ps -a | grep "zabbix-agent" | grep Up
