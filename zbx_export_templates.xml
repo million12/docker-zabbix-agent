@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>2.0</version>
-    <date>2016-01-13T04:02:56Z</date>
+    <date>2016-01-18T10:21:58Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -321,6 +321,49 @@
                             <logtimefmt/>
                         </item_prototype>
                         <item_prototype>
+                            <name>Memory Rate {#HCONTAINERID}</name>
+                            <type>15</type>
+                            <snmp_community/>
+                            <multiplier>0</multiplier>
+                            <snmp_oid/>
+                            <key>docker.mem_rate[{#HCONTAINERID}]</key>
+                            <delay>30</delay>
+                            <history>90</history>
+                            <trends>365</trends>
+                            <status>0</status>
+                            <value_type>0</value_type>
+                            <allowed_hosts/>
+                            <units>%</units>
+                            <delta>0</delta>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <formula>1</formula>
+                            <delay_flex/>
+                            <params>(last(&quot;docker.memusage[{#HCONTAINERID},{#FCONTAINERID}]&quot;)/last(&quot;docker.memlimit[{#HCONTAINERID},{#FCONTAINERID}]&quot;)*100)</params>
+                            <ipmi_sensor/>
+                            <data_type>0</data_type>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description>Memory usage rate</description>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Docker</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                        </item_prototype>
+                        <item_prototype>
                             <name>Memory Usage {#HCONTAINERID}</name>
                             <type>7</type>
                             <snmp_community/>
@@ -452,21 +495,21 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template App Docker - active:docker.cpu_rate[{#HCONTAINERID}].avg(5m)}&gt;0.8</expression>
+                            <expression>{Template App Docker - active:docker.cpu_rate[{#HCONTAINERID}].avg(5m)}&gt;80</expression>
                             <name>CPU Rate of [{#HCONTAINERID},{#FCONTAINERID}] container too high</name>
                             <url/>
                             <status>0</status>
-                            <priority>2</priority>
+                            <priority>3</priority>
                             <description>CPU usage rate exceeds 80%</description>
                             <type>0</type>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Docker - active:docker.memusage[{#HCONTAINERID},{#FCONTAINERID}].avg(5m)}&gt;2048000000</expression>
-                            <name>Memory of [{#HCONTAINERID},{#FCONTAINERID}] container too high</name>
+                            <expression>{Template App Docker - active:docker.mem_rate[{#HCONTAINERID}].avg(5m)}&gt;90</expression>
+                            <name>Memory of [{#HCONTAINERID},{#FCONTAINERID}] usage exceeds 90%</name>
                             <url/>
                             <status>0</status>
                             <priority>4</priority>
-                            <description>Container  [{#HCONTAINERID},{#FCONTAINERID}] exceeds 2048,000,000 bytes</description>
+                            <description>Container  [{#HCONTAINERID},{#FCONTAINERID}] exceeds 90%</description>
                             <type>0</type>
                         </trigger_prototype>
                         <trigger_prototype>
@@ -523,7 +566,7 @@ RX</description>
                             </graph_items>
                         </graph_prototype>
                         <graph_prototype>
-                            <name>Memory of {#HCONTAINERID} container</name>
+                            <name>Memory Rate of {#HCONTAINERID}</name>
                             <width>900</width>
                             <height>200</height>
                             <yaxismin>0.0000</yaxismin>
@@ -549,7 +592,7 @@ RX</description>
                                     <type>0</type>
                                     <item>
                                         <host>Template App Docker - active</host>
-                                        <key>docker.memusage[{#HCONTAINERID},{#FCONTAINERID}]</key>
+                                        <key>docker.mem_rate[{#HCONTAINERID}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
