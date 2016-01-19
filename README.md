@@ -1,48 +1,58 @@
 ## Zabbix Agent Docker Image
 
-[![Circle CI](https://circleci.com/gh/million12/docker-zabbix-agent/tree/master.svg?style=svg&circle-token=c12c61948ad16f75903de19a2001d982cd17809d)](https://circleci.com/gh/million12/docker-zabbix-agent/tree/master)
+**Zabbix agent is running in foreground, and in Docker Container.  It only fetch and generate metrics on the host machine, and not containers on the host machine.  Next step, containers metrics collect shall be added** 
 
-This is a [million12/zabbix-agent](https://registry.hub.docker.com/u/million12/zabbix-agent/) docker image with Zabbix Agent. It's based on CentOS-7 official image.  
-
-**Zabbix agent is running in foreground.** 
+## Prerequisites
+You have to create a zabbix server (2.4.7+) first, refer to [Install Zabbix Server In Container](https://hub.docker.com/r/zabbix/zabbix-server-2.4/ "zabbix-server")
 
 ## ENV variables
 
 #### ZABBIX_SERVER
-Default: `ZABBIX_SERVER=127.0.0.1`  
+Default: `ZABBIX_SERVER=127.0.0.1`
+
+Required: False
+
 Change it to match your server
 
+#### METADATA
+Default: `METADATA=zabbix_docker`
+
+Required: False
+
+Used for auth-registration
+
+#### HOST
+Required: True
+
 ## Usage
-### Basic 
-	docker run \
-	-d \
-	-p 10050:10050 \
-	million12/zabbix-agent
+```
+docker run -d --privileged \
+  --net=host \
+	-v /proc:/docker/proc:ro \
+	-v /sys:/docker/sys:ro \
+	-v /dev:/docker/dev:ro \
+	-v /var/run/docker.sock:/var/run/docker.sock:ro  \
+	--env ZABBIX_SERVER=<zabbix_server_ip> \
+	--env METADATA=zabbix_docker \
+	--env HOST=<zabbix_agent_ip> \
+	shuailong/docker-zabbix-agent:2.4.7
+```
 
-### Mount custom config, set server ip
-	docker run \
-	-d \
-	-p 10050:10050 \
-	-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \
-	--env="ZABBIX_SERVER=my.ip" \
-	million12/zabbix-agent 
+### Debug Mode
+```
+docker run -it --privileged \
+  --net=host \
+	-v /proc:/docker/proc:ro \
+	-v /sys:/docker/sys:ro \
+	-v /dev:/docker/dev:ro \
+	-v /var/run/docker.sock:/var/run/docker.sock:ro  \
+	--env ZABBIX_SERVER=<zabbix_server_ip> \
+	--env METADATA=zabbix_docker \
+	--env HOST=<zabbix_agent_ip> \
+	shuailong/docker-zabbix-agent:2.4.7 /bin/bash -c "/bin/sh /start.sh && tail -n 50 /tmp/zabbix_agentd.log"
+```  
 
-#### CoreOS 
-	docker run \
-	-d \
-	-p 10050:10050 \
-	-v /proc:/proc \
-	-v /sys:/sys \
-	-v /dev:/dev \
-	-v /var/run/docker.sock:/var/run/docker.sock \
-	-v /my-zabbix-agent-config.conf:/etc/zabbix_agentd.conf \
-	--env="ZABBIX_SERVER=my.ip" \
-	million12/zabbix-agent
-    
-## Author
+## Give thanks to
+1. [million12](https://github.com/million12/docker-zabbix-agent, "million12")
 
-Author: Przemyslaw Ozgo (<linux@ozgo.info>)
-
----
-
-**Sponsored by** [Typostrap.io - the new prototyping tool](http://typostrap.io/) for building highly-interactive prototypes of your website or web app. Built on top of TYPO3 Neos CMS and Zurb Foundation framework.
+2. [bhuisgen](https://github.com/bhuisgen/docker-zabbix-coreos, "bhuisgen")
