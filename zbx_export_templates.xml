@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>2.0</version>
-    <date>2016-01-18T10:21:58Z</date>
+    <date>2016-01-19T08:36:23Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -462,7 +462,7 @@
                             <status>0</status>
                             <value_type>0</value_type>
                             <allowed_hosts/>
-                            <units/>
+                            <units>bit</units>
                             <delta>1</delta>
                             <snmpv3_contextname/>
                             <snmpv3_securityname/>
@@ -495,40 +495,39 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template App Docker - active:docker.cpu_rate[{#HCONTAINERID}].avg(5m)}&gt;80</expression>
+                            <expression>{Template App Docker - active:docker.cpu_rate[{#HCONTAINERID}].avg(10m)}&gt;150</expression>
                             <name>CPU Rate of [{#HCONTAINERID},{#FCONTAINERID}] container too high</name>
                             <url/>
                             <status>0</status>
-                            <priority>3</priority>
-                            <description>CPU usage rate exceeds 80%</description>
+                            <priority>2</priority>
+                            <description>CPU usage rate exceeds 100%</description>
                             <type>0</type>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Docker - active:docker.mem_rate[{#HCONTAINERID}].avg(5m)}&gt;90</expression>
-                            <name>Memory of [{#HCONTAINERID},{#FCONTAINERID}] usage exceeds 90%</name>
+                            <expression>{Template App Docker - active:docker.mem_rate[{#HCONTAINERID}].avg(5m)}&gt;99</expression>
+                            <name>Memory of [{#HCONTAINERID},{#FCONTAINERID}] container too high</name>
                             <url/>
                             <status>0</status>
                             <priority>4</priority>
-                            <description>Container  [{#HCONTAINERID},{#FCONTAINERID}] exceeds 90%</description>
+                            <description>Memory rate (average of 5min) exceeds 99%</description>
                             <type>0</type>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Docker - active:docker.xnet[/{#HCONTAINERID},eth0,RX-OK].avg(10m)}&gt;5M</expression>
-                            <name>Network received {#HCONTAINERID} too high</name>
+                            <expression>{Template App Docker - active:docker.xnet[/{#HCONTAINERID},eth0,RX-OK].avg(10m)}&gt;1000</expression>
+                            <name>Network rx from {#HCONTAINERID} too high</name>
                             <url/>
                             <status>0</status>
                             <priority>2</priority>
-                            <description>容器 {#HCONTAINERID} 的入网流量10分钟的平均值 超过5M &#13;
-RX</description>
+                            <description/>
                             <type>0</type>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Docker - active:docker.xnet[/{#HCONTAINERID},eth0,TX-OK].avg(10m)}&gt;5M</expression>
-                            <name>Network transmitted from {#HCONTAINERID} too high</name>
+                            <expression>{Template App Docker - active:docker.xnet[/{#HCONTAINERID},eth0,TX-OK].avg(10m)}&gt;1000</expression>
+                            <name>Network tx to {#HCONTAINERID} too high</name>
                             <url/>
                             <status>0</status>
                             <priority>2</priority>
-                            <description>Container {#HCONTAINERID} transmitted out  exceeds 5M</description>
+                            <description>Network transmitted exceeds 1000</description>
                             <type>0</type>
                         </trigger_prototype>
                     </trigger_prototypes>
@@ -598,7 +597,7 @@ RX</description>
                             </graph_items>
                         </graph_prototype>
                         <graph_prototype>
-                            <name>Network of {#HCONTAINERID} container</name>
+                            <name>Network rx/tx {#HCONTAINERID}</name>
                             <width>900</width>
                             <height>200</height>
                             <yaxismin>0.0000</yaxismin>
@@ -637,38 +636,6 @@ RX</description>
                                     <item>
                                         <host>Template App Docker - active</host>
                                         <key>docker.xnet[/{#HCONTAINERID},eth0,TX-OK]</key>
-                                    </item>
-                                </graph_item>
-                            </graph_items>
-                        </graph_prototype>
-                        <graph_prototype>
-                            <name>State of {#HCONTAINERID} container</name>
-                            <width>900</width>
-                            <height>200</height>
-                            <yaxismin>0.0000</yaxismin>
-                            <yaxismax>100.0000</yaxismax>
-                            <show_work_period>1</show_work_period>
-                            <show_triggers>1</show_triggers>
-                            <type>0</type>
-                            <show_legend>1</show_legend>
-                            <show_3d>0</show_3d>
-                            <percent_left>0.0000</percent_left>
-                            <percent_right>0.0000</percent_right>
-                            <ymin_type_1>1</ymin_type_1>
-                            <ymax_type_1>0</ymax_type_1>
-                            <ymin_item_1>0</ymin_item_1>
-                            <ymax_item_1>0</ymax_item_1>
-                            <graph_items>
-                                <graph_item>
-                                    <sortorder>0</sortorder>
-                                    <drawtype>0</drawtype>
-                                    <color>000088</color>
-                                    <yaxisside>0</yaxisside>
-                                    <calc_fnc>2</calc_fnc>
-                                    <type>0</type>
-                                    <item>
-                                        <host>Template App Docker - active</host>
-                                        <key>docker.up[/{#HCONTAINERID}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
