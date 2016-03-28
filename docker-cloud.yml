@@ -1,0 +1,11 @@
+zabbix-agent:
+  image: million12/zabbix-agent
+  ports:
+    - "10050:10050"
+  environment:
+    ZABBIX_SERVER: 127.0.0.1
+  volumes:
+    - /proc:/data/proc
+    - /sys:/data/sys
+    - /dev:/data/dev
+    - /var/run/docker.sock:/var/run/docker.sock

@@ -1,16 +1,17 @@
 FROM centos:centos7
 MAINTAINER Przemyslaw Ozgo linux@ozgo.info
 
-COPY foreground.patch /foreground.patch
-
-ENV ZABBIX_VERSION=2.4.7
+ENV ZABBIX_VERSION=3.0.1 \
+    ZABBIX_SERVER=127.0.0.1 \
+    HOSTNAME=zabbix.agent \
+    HOST_METADATA=zabbix.agent \
+    CONFIG_FILE=/usr/local/etc/zabbix_agentd.conf
 
 RUN \
   yum clean all && yum makecache && \
-  yum install --nogpgcheck -y svn automake gcc make && \
+  yum install --nogpgcheck -y svn automake gcc make iproute && \
   svn co svn://svn.zabbix.com/tags/${ZABBIX_VERSION} /usr/local/src/zabbix && \
   cd /usr/local/src/zabbix && \
-  svn patch /foreground.patch && \
   ./bootstrap.sh && \
   ./configure --enable-agent && \
   make install && \
@@ -20,10 +21,13 @@ RUN \
   rm -rf  /usr/local/src/zabbix && \
   yum clean all
 
-COPY start.sh /start.sh
+COPY container-files /
 
-ENV ZABBIX_SERVER=127.0.0.1
+RUN \
+    chown -R zabbix:wheel /usr/local/etc/
 
-CMD /start.sh
+USER zabbix
 
 EXPOSE 10050
+
+ENTRYPOINT ["/bootstrap.sh"]

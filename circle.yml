@@ -1,15 +1,23 @@
 machine:
   services:
     - docker
+  environment:
+    ZABBIX_SERVER: my.server.com
+    HOSTNAME: my.hostname.com
+    HOST_METADATA: my.metadata.com
 
 dependencies:
   pre:
     - docker pull centos:centos7
   post:
-      - docker build -t million12/zabbix-agent:test .
+      - docker build -t million12/zabbix-agent .
 
 test:
   override:
-    - docker run -d --name zabbix-agent --net host million12/zabbix-agent:test
-    - sleep 5
-    - docker ps -a | grep "zabbix-agent" | grep Up
+    - docker run -d --name zabbix-agent --net host -e ZABBIX_SERVER=$ZABBIX_SERVER -e HOSTNAME=$HOSTNAME -e HOST_METADATA=$HOST_METADATA million12/zabbix-agent
+    - docker logs -f zabbix-agent | tee -a ${CIRCLE_ARTIFACTS}/zabbix-agent.log:
+          background: true
+    - while true; do if grep "Press Ctrl+C to exit" -a ${CIRCLE_ARTIFACTS}/zabbix-agent.log; then break; else sleep 1; fi done
+    - grep $ZABBIX_SERVER -a ${CIRCLE_ARTIFACTS}/zabbix-agent.log
+    - grep $HOSTNAME -a ${CIRCLE_ARTIFACTS}/zabbix-agent.log
+    - grep $HOST_METADATA -a ${CIRCLE_ARTIFACTS}/zabbix-agent.log
