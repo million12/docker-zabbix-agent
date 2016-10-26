@@ -3,7 +3,7 @@ set -eu
 export TERM=xterm
 
 # Default Agent ConfigFile if not set by docker
-if [ -z "$CONFIG_FILE" ];
+if [ -z "$CONFIG_FILE" ]; then
   CONFIG_FILE="/usr/local/etc/zabbix_agentd.conf"
 fi
 
