@@ -1,8 +1,12 @@
 #!/bin/sh
 set -eu
 export TERM=xterm
-# Agent ConfigFile
-CONFIG_FILE="/usr/local/etc/zabbix_agentd.conf"
+
+# Default Agent ConfigFile if not set by docker
+if [ -z "$CONFIG_FILE" ];
+  CONFIG_FILE="/usr/local/etc/zabbix_agentd.conf"
+fi
+
 # Bash Colors
 red=`tput setaf 1`
 green=`tput setaf 2`
