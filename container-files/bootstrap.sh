@@ -40,9 +40,9 @@ print_config() {
   printf '=%.0s' {1..100} && echo
 }
 start() {
-    log "Starting Zabbix Agent using configuration file: ${CONFIG_FILE}"
+    log "Starting Zabbix Agent using configuration file: ${TARGET_CONFIG_FILE}"
     print_config
-    zabbix_agentd -f -c ${CONFIG_FILE}
+    zabbix_agentd -f -c ${TARGET_CONFIG_FILE}
 }
 
 # Use the default config file if not set by an environment variable
