@@ -26,7 +26,7 @@ update_config() {
       log "Changing Zabbix Hostname to ${bold}${white}${HOSTNAME}${reset}."
       sed -i 's/^[# ]*Hostname=.*$/Hostname='$HOSTNAME'/g' ${TARGET_CONFIG_FILE}
     fi
-    if [ ! -z "$HOST_METADATA" ]; then
+    if [ ! -z "$HOST_METADATA" ]; then
       log "Changing Zabbix Host Metadata to ${bold}${white}${HOST_METADATA}${reset}."
       sed -i 's/^[# ]*HostMetadata=.*$/HostMetadata='$HOST_METADATA'/g' ${TARGET_CONFIG_FILE}
     fi
@@ -35,7 +35,7 @@ update_config() {
 print_config() {
   log "Current Zabbix Agent config:"
   printf '=%.0s' {1..100} && echo
-  cat ${CONFIG_FILE}
+  cat ${TARGET_CONFIG_FILE}
   echo ""
   printf '=%.0s' {1..100} && echo
 }
