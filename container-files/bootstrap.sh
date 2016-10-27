@@ -10,7 +10,7 @@ else
 fi
 
 # This is the actual config file used, containing changes implied by environment variables
-TARGET_CONFIG_FILE=$(tempfile)
+TARGET_CONFIG_FILE=$(mktemp)
 log "Loading config: ${SRC_CONFIG_FILE}"
 cp "$SRC_CONFIG_FILE" "$TARGET_CONFIG_FILE"
 
@@ -30,17 +30,17 @@ log() {
 ### Update config file based on environment variables
 update_config() {
     log "Updating configuration file..."
-    if [ ! -z "$ZABBIX_SERVER" ] && [[ "$ZABBIX_SERVER" != "127.0.0.1" ]]; then
+    if [ ! -z "$ZABBIX_SERVER" ]; then
       log "Changing Zabbix Server IP to ${bold}${white}${ZABBIX_SERVER}${reset}"
-      sed -i 's/Server=127.0.0.1/Server='$ZABBIX_SERVER'/g' ${TARGET_CONFIG_FILE}
+      sed -i 's/^[# ]*Server=.*$/Server='$ZABBIX_SERVER'/g' ${TARGET_CONFIG_FILE}
     fi
-    if [ ! -z "$HOSTNAME" ] && [[ "$HOSTNAME" != "zabbix.agent" ]]; then
+    if [ ! -z "$HOSTNAME" ]; then
       log "Changing Zabbix Hostname to ${bold}${white}${HOSTNAME}${reset}."
-      sed -i 's/Hostname=Zabbix server/Hostname='$HOSTNAME'/g' ${TARGET_CONFIG_FILE}
+      sed -i 's/^[# ]*Hostname=.*$/Hostname='$HOSTNAME'/g' ${TARGET_CONFIG_FILE}
     fi
-    if [ ! -z "$HOST_METADATA" ] && [[ "$HOST_METADATA" != "zabbix.agent" ]]; then
+    if [ ! -z "$HOST_METADATA" ]; then
       log "Changing Zabbix Host Metadata to ${bold}${white}${HOST_METADATA}${reset}."
-      sed -i 's/# HostMetadata=/HostMetadata='$HOST_METADATA'/g' ${TARGET_CONFIG_FILE}
+      sed -i 's/^[# ]*HostMetadata=.*$/HostMetadata='$HOST_METADATA'/g' ${TARGET_CONFIG_FILE}
     fi
     log "Config updated"
 }
