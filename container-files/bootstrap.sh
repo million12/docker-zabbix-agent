@@ -2,18 +2,6 @@
 set -eu
 export TERM=xterm
 
-# Use the default config file if not set by an environment variable
-if [ -z "$CONFIG_FILE" ]; then
-  SRC_CONFIG_FILE="/usr/local/etc/zabbix_agentd.conf"
-else
-  SRC_CONFIG_FILE="$CONFIG_FILE"
-fi
-
-# This is the actual config file used, containing changes implied by environment variables
-TARGET_CONFIG_FILE=$(mktemp)
-log "Loading config: ${SRC_CONFIG_FILE}"
-cp "$SRC_CONFIG_FILE" "$TARGET_CONFIG_FILE"
-
 # Bash Colors
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -56,6 +44,18 @@ start() {
     print_config
     zabbix_agentd -f -c ${CONFIG_FILE}
 }
+
+# Use the default config file if not set by an environment variable
+if [ -z "$CONFIG_FILE" ]; then
+  SRC_CONFIG_FILE="/usr/local/etc/zabbix_agentd.conf"
+else
+  SRC_CONFIG_FILE="$CONFIG_FILE"
+fi
+
+# This is the actual config file used, containing changes implied by environment variables
+TARGET_CONFIG_FILE=$(mktemp)
+log "Loading config: ${SRC_CONFIG_FILE}"
+cp "$SRC_CONFIG_FILE" "$TARGET_CONFIG_FILE"
 
 update_config
 start
